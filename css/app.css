@@ -817,6 +817,22 @@ input[type="number"]:focus {
     border-color: #FFAC00;
 }
 
+.download-assistant-button {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #e0e0e0;
+    font-weight: 600;
+}
+
+.download-assistant-button:hover {
+    background: #2d2d2d;
+    border-color: #FFAC00;
+}
+
+.download-assistant-button svg {
+    margin-right: 6px;
+}
+
 .btn-primary {
     background: #1a1a1a;
     color: #e0e0e0;
@@ -1315,4 +1331,31 @@ input[type="number"]:focus {
     border-color: #3a3a3a !important;
     box-shadow: none !important;
     color: #e0e0e0 !important;
+}
+
+@media (max-width: 768px) {
+    .header-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .header-buttons button {
+        min-width: auto;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .download-assistant-button {
+        order: 2;
+    }
+    
+    .guide-button {
+        order: 1;
+    }
+    
+    .info-button-wrapper {
+        order: 3;
+        align-self: center;
+    }
 }
