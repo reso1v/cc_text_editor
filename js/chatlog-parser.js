@@ -65,6 +65,31 @@ $(document).ready(function() {
                 function replaceColorCodes(str) {
                     let result = str;
                     
+                    function applyInlineHexColors(input) {
+                        const segments = input.split(/(\{[A-Fa-f0-9]{6}\})/g);
+                        let html = '';
+                        let hasOpenSpan = false;
+                        
+                        segments.forEach(segment => {
+                            const match = segment.match(/^\{([A-Fa-f0-9]{6})\}$/);
+                            if (match) {
+                                if (hasOpenSpan) {
+                                    html += '</span>';
+                                }
+                                hasOpenSpan = true;
+                                html += `<span style="color: #${match[1]};">`;
+                            } else {
+                                html += segment;
+                            }
+                        });
+                        
+                        if (hasOpenSpan) {
+                            html += '</span>';
+                        }
+                        
+                        return html;
+                    }
+                    
                     if (result.includes("<П>")) {
                         result = result.replace(/<П>/g, '<br>');
                     }
@@ -98,8 +123,7 @@ $(document).ready(function() {
                     
                     result = result.replace(/\/(?=\s|$)/g, '<span style="color: #1F92FE;">/</span>');
                     
-                    result = result.replace(/\{([A-Fa-f0-9]{6})\}/g, '<span style="color: #$1;">');
-                    result = result.replace(/\{([A-Fa-f0-9]{6})\}/g, '</span>');
+                    result = applyInlineHexColors(result);
                     
                     return result;
                 }
