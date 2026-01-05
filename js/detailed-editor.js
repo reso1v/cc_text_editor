@@ -20,7 +20,6 @@
         const textScaleInput = document.getElementById('detailedTextScale');
         const textScaleValue = document.getElementById('detailedTextScaleValue');
 
-        const resetBtn = document.getElementById('detailedResetPositions');
         const exitBtn = document.getElementById('exitDetailedMode');
         const downloadBtn = document.getElementById('downloadOutputTransparent');
 
@@ -29,9 +28,12 @@
         const fontValue = document.getElementById('detailedFontValue');
         const fontOptions = fontDropdown ? fontDropdown.querySelectorAll('.font-selector-option') : [];
 
+        const outlineInput = document.getElementById('detailedOutlineWidth');
+        const outlineValue = document.getElementById('detailedOutlineWidthValue');
+
         if (!imageInput || !imageWrapper || !imageEl || !imageScaleInput || !imageScaleValue ||
             !textLayer || !textContent || !textScaleInput || !textScaleValue ||
-            !resetBtn || !exitBtn || !downloadBtn) {
+            !exitBtn || !downloadBtn || !outlineInput || !outlineValue) {
             return;
         }
 
@@ -49,6 +51,9 @@
                 scale: parseFloat(textScaleInput.value) || 1,
                 x: 0,
                 y: 0
+            },
+            outline: {
+                width: parseFloat(outlineInput.value) || 0
             }
         };
 
@@ -95,17 +100,31 @@
             }
         };
 
-        const resetTransforms = () => {
-            state.image.x = 0;
-            state.image.y = 0;
-            state.text.x = 0;
-            state.text.y = 0;
-            state.image.scale = clamp(1, parseFloat(imageScaleInput.min), parseFloat(imageScaleInput.max));
-            state.text.scale = clamp(1, parseFloat(textScaleInput.min), parseFloat(textScaleInput.max));
-            imageScaleInput.value = state.image.scale;
-            textScaleInput.value = state.text.scale;
-            updateScaleLabels();
-            applyTransforms();
+        const applyOutline = () => {
+            const width = Math.max(0, state.outline.width);
+            outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
+
+            if (width === 0) {
+                textContent.style.textShadow = 'none';
+                textContent.style.webkitTextStroke = '0px #000';
+                textContent.style.strokeDasharray = '';
+                return;
+            }
+
+            const offsets = [
+                [width, 0],
+                [-width, 0],
+                [0, width],
+                [0, -width],
+                [width, width],
+                [-width, width],
+                [width, -width],
+                [-width, -width]
+            ];
+
+            const shadows = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
+            textContent.style.textShadow = shadows;
+            textContent.style.webkitTextStroke = `${Math.max(width * 0.65, 0.5)}px #000`;
         };
 
         const fitImageIntoCanvas = () => {
@@ -229,10 +248,6 @@
         });
 
         imageInput.addEventListener('change', handleImageUpload);
-        resetBtn.addEventListener('click', () => {
-            resetTransforms();
-        });
-
         imageScaleInput.addEventListener('input', (event) => {
             state.image.scale = clamp(parseFloat(event.target.value) || 1, parseFloat(imageScaleInput.min), parseFloat(imageScaleInput.max));
             updateScaleLabels();
@@ -243,6 +258,11 @@
             state.text.scale = clamp(parseFloat(event.target.value) || 1, parseFloat(textScaleInput.min), parseFloat(textScaleInput.max));
             updateScaleLabels();
             applyTransforms();
+        });
+
+        outlineInput.addEventListener('input', (event) => {
+            state.outline.width = clamp(parseFloat(event.target.value) || 0, parseFloat(outlineInput.min), parseFloat(outlineInput.max));
+            applyOutline();
         });
 
         imageWrapper.addEventListener('pointerdown', (event) => {
@@ -298,6 +318,7 @@
         }
 
         updateScaleLabels();
+        applyOutline();
         applyTransforms();
     });
 })();
