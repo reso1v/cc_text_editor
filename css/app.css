@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @font-face {
     font-family: 'GTA Art Deco Regular';
     src: url("../app/GTA%20ART%20DECO%20REGULAR.TTF") format("truetype");
@@ -22,6 +23,8 @@
     font-display: swap;
 }
 
+=======
+>>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 body {
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     width: 100%;
@@ -709,6 +712,7 @@ a:hover {
 .font-selector-option[data-font="Open Sans"] { font-family: 'Open Sans', sans-serif; }
 .font-selector-option[data-font="Nunito Sans"] { font-family: 'Nunito Sans', sans-serif; }
 .font-selector-option[data-font="Inter"] { font-family: 'Inter', sans-serif; }
+<<<<<<< HEAD
 .font-selector-option[data-font="GTA Art Deco Regular"] { font-family: 'GTA Art Deco Regular', sans-serif; }
 .font-selector-option[data-font="GTA Art Deco Medium"] { font-family: 'GTA Art Deco Medium', sans-serif; }
 .font-selector-option[data-font="GTA Art Deco Bold"] { font-family: 'GTA Art Deco Bold', sans-serif; }
@@ -732,6 +736,8 @@ a:hover {
     font-weight: 700;
     flex-shrink: 0;
 }
+=======
+>>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 
 #font-family {
     display: none;
@@ -853,6 +859,7 @@ input[type="number"]:focus {
     width: 100%;
 }
 
+<<<<<<< HEAD
 .detailed-mode-trigger {
     margin-top: 0.75rem;
     font-weight: 600;
@@ -1084,6 +1091,8 @@ input[type="number"]:focus {
     letter-spacing: 0.05em;
 }
 
+=======
+>>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 .btn-success {
     background: #1a1a1a;
     color: #e0e0e0;
@@ -1147,30 +1156,39 @@ input[type="number"]:focus {
     width: 100%;
 }
 
+<<<<<<< HEAD
 .main-layout.detailed-mode {
     gap: 3rem;
 }
 
+=======
+>>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 .left-panel {
     flex: 0.45;
     min-width: 0;
 }
 
+<<<<<<< HEAD
 .main-layout.detailed-mode .left-panel {
     flex: 0 0 360px;
     max-width: 360px;
 }
 
+=======
+>>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 .right-panel {
     flex: 0.55;
     min-width: 0;
 }
 
+<<<<<<< HEAD
 .main-layout.detailed-mode .right-panel {
     flex: 1;
     min-width: 1481px;
 }
 
+=======
+>>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 .preview-header {
     margin-bottom: 0.5rem;
     padding-bottom: 0.5rem;
