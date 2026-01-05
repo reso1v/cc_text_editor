@@ -189,6 +189,7 @@
 
             state.isExporting = true;
             editor.classList.add('exporting');
+            canvas.classList.add('no-outline');
 
             try {
                 const blob = await domtoimage.toBlob(canvas, {
@@ -213,6 +214,7 @@
                 console.error('Ошибка при сохранении детального режима:', error);
                 alert('Не удалось сохранить изображение: ' + error.message);
             } finally {
+                canvas.classList.remove('no-outline');
                 editor.classList.remove('exporting');
                 state.isExporting = false;
             }
