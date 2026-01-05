@@ -982,6 +982,14 @@ input[type="number"]:focus {
     z-index: 3;
 }
 
+.detailed-editor.exporting .detailed-editor-canvas::before {
+    opacity: 0;
+}
+
+.detailed-editor-canvas.no-outline::before {
+    display: none;
+}
+
 .detailed-background,
 .detailed-text-layer {
     position: absolute;
