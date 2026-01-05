@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="asapdev" />
+    <meta name="description" content="ChatLog Magician - инструмент для редактирования и форматирования логов чата из GTA-WORLD (RAGE:MP). Сохраняйте красивые скриншоты чата с настраиваемым оформлением." />
+    <meta name="keywords" content="GTA-WORLD, RAGE-MP, чат, лог, редактор, скриншот, asapdev" />
+    <meta property="og:title" content="ChatLog Magician for GTA-WORLD" />
+    <meta property="og:description" content="Инструмент для редактирования и форматирования логов чата из GTA-WORLD" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="gtaw-logo.png" />
+    <title>Инструмент редактирования СС</title>
+
+
+    <link rel="stylesheet" href="css/boostrap.css" crossorigin="anonymous" />
+    <link href="css/sp-style.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link rel="icon" href="gtaw-logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="header-content">
+        <img src="gtaw-logo.png" alt="GTAW Logo" class="gtaw-logo">
+        <div class="header-buttons">
+          <button class="btn btn-primary guide-button" id="guideButton" onclick="document.getElementById('guideModal').classList.add('show');">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 8a6 6 0 1 0 12 0 6 6 0 0 0-12 0z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Инструкция: как получить лог чата из RAGE:MP
+          </button>
+          <button class="btn btn-success download-assistant-button" id="downloadAssistantButton" onclick="downloadGTAWAssistant()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 12L8 2M8 12L5 9M8 12L11 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 14H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Скачать GTAW Assistant
+          </button>
+          <div class="info-button-wrapper">
+            <button class="btn btn-icon info-button" id="infoButton">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15Z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 11.5V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="5" r="0.5" fill="currentColor"/>
+              </svg>
+            </button>
+            <div class="info-tooltip">
+              <p>Привет! Инструмент не является официальным и не поддерживается разработчиками проекта. Он создан игроками для игроков. Текущая версия поддерживается reso1v.</p>
+              <p>Основателем инструмента является asapdev, дополнительно в развитии принимает участие blanco leopardo из англоязычного GTA-WORLD.</p>
+              <div class="tooltip-buttons">
+                <a href="https://community.ls-rp.com/forums/topic/13619-chatlog-magician/" target="_blank" class="btn btn-tooltip">
+                  Релиз от asapdev
+                </a>
+                <a href="https://forum.gta.world/en/topic/133875-guide-chatlog-magician-for-gta-world/" target="_blank" class="btn btn-tooltip">
+                  Релиз от blanco leopardo
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row name">
+        <div class="col-xs-12">
+          <input type="hidden" class="form-control" id="name" />
+        </div>
+      </div>
+
+      <div class="clog_settings">
+        <div class="settings-grid">
+          <div class="settings-item">
+            <label for="font-label">РАЗМЕР ШРИФТА</label>
+            <input
+              name="font-label"
+              id="font-label"
+              type="number"
+              min="10"
+              max="64"
+              value="12"
+            />
+          </div>
+          
+          <div class="settings-item">
+            <label for="line-height">МЕЖСТРОЧНЫЙ ИНТЕРВАЛ</label>
+            <div class="line-height-control">
+              <input
+                type="range"
+                name="line-height"
+                id="line-height"
+                min="-6"
+                max="3"
+                step="0.1"
+                value="1.2"
+                class="line-height-slider"
+              />
+              <div class="line-height-value">1.2</div>
+            </div>
+          </div>
+
+          <div class="settings-item">
+            <label for="font-family">ШРИФТ</label>
+            <div class="font-selector">
+              <div class="font-selector-trigger" id="fontSelectorTrigger">
+                <span class="font-selector-value" id="fontSelectorValue">Arial</span>
+                <svg class="font-selector-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="font-selector-dropdown" id="fontSelectorDropdown">
+                <div class="font-selector-option" data-font="Arial">Arial</div>
+                <div class="font-selector-option" data-font="Georgia">Georgia</div>
+                <div class="font-selector-option" data-font="Palatino Linotype">Palatino Linotype</div>
+                <div class="font-selector-option" data-font="Times New Roman">Times New Roman</div>
+                <div class="font-selector-option" data-font="Arial Black">Arial Black</div>
+                <div class="font-selector-option" data-font="Comic Sans MS">Comic Sans MS</div>
+                <div class="font-selector-option" data-font="Impact">Impact</div>
+                <div class="font-selector-option" data-font="Lucida Sans Unicode">Lucida Sans Unicode</div>
+                <div class="font-selector-option" data-font="Tahoma">Tahoma</div>
+                <div class="font-selector-option" data-font="Trebuchet MS">Trebuchet MS</div>
+                <div class="font-selector-option" data-font="Verdana">Verdana</div>
+                <div class="font-selector-option" data-font="Courier New">Courier New</div>
+                <div class="font-selector-option" data-font="Lucida Console">Lucida Console</div>
+                <div class="font-selector-option" data-font="Calibri">Calibri</div>
+                <div class="font-selector-option" data-font="Raleway">Raleway</div>
+                <div class="font-selector-option" data-font="Roboto">Roboto</div>
+                <div class="font-selector-option" data-font="Ubuntu">Ubuntu</div>
+                <div class="font-selector-option" data-font="Mukta">Mukta</div>
+                <div class="font-selector-option" data-font="Open Sans">Open Sans</div>
+                <div class="font-selector-option" data-font="Nunito Sans">Nunito Sans</div>
+                <div class="font-selector-option" data-font="Inter">Inter</div>
+                <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Regular">
+                  <span>GTA Art Deco Regular</span>
+                  <span class="font-tag-new">Новый шрифт</span>
+                </div>
+                <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Medium">
+                  <span>GTA Art Deco Medium</span>
+                  <span class="font-tag-new">Новый шрифт</span>
+                </div>
+                <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Bold">
+                  <span>GTA Art Deco Bold</span>
+                  <span class="font-tag-new">Новый шрифт</span>
+                </div>
+                <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Condensed">
+                  <span>GTA Art Deco Condensed</span>
+                  <span class="font-tag-new">Новый шрифт</span>
+                </div>
+              </div>
+              <input type="hidden" id="font-family" name="font-family" value="Arial">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-layout" id="mainLayout">
+        <div class="left-panel">
+          <div class="input-header">
+            <h3>Ввод текста</h3>
+          </div>
+          <div class="textarea-container">
+            <div class="empty-state" id="emptyState">
+              <div class="empty-state-content">
+                <div class="empty-state-icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 10h.01M12 10h.01M16 10h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h3 class="empty-state-title">Начните вводить текст</h3>
+                <p class="empty-state-description">Вставьте лог чата из RAGE для создания скриншота</p>
+              </div>
+            </div>
+            <textarea
+              class="form-control textarea-input"
+              rows="15"
+              placeholder="Вставьте лог чата из RAGE в это поле..."
+            ></textarea>
+          </div>
+
+          <div class="controls-section">
+            <button id="downloadOutputTransparent" class="btn btn-success btn-full-width">
+              Скачать в PNG
+            </button>
+            <button id="toggleDetailedMode" class="btn btn-outline-secondary btn-full-width detailed-mode-trigger">
+              Режим детального редактирования (BETA)
+            </button>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div class="preview-header">
+            <h3>Предпросмотр</h3>
+          </div>
+          <div class="output" id="output"></div>
+          <div class="detailed-editor" id="detailedEditor" aria-hidden="true">
+            <div class="detailed-editor-toolbar">
+              <div class="toolbar-left">
+                <label class="btn download-assistant-button upload-photo-btn">
+                  Загрузить фото
+                  <input type="file" id="detailedImageInput" accept="image/*" hidden />
+                </label>
+                <button class="btn btn-outline-light detailed-reset" id="detailedResetPositions">
+                  Сбросить позиционирование
+                </button>
+              </div>
+              <div class="toolbar-controls">
+                <div class="control-group">
+                  <span>Масштаб фото</span>
+                  <div class="control-input">
+                    <input type="range" id="detailedImageScale" min="0.4" max="2.5" step="0.01" value="1" />
+                    <span class="control-value" id="detailedImageScaleValue">100%</span>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <span>Масштаб текста</span>
+                  <div class="control-input">
+                    <input type="range" id="detailedTextScale" min="0.5" max="2" step="0.01" value="1" />
+                    <span class="control-value" id="detailedTextScaleValue">100%</span>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <span>Шрифт текста</span>
+                  <div class="font-selector detailed-font-selector">
+                    <div class="font-selector-trigger" id="detailedFontTrigger">
+                      <span class="font-selector-value" id="detailedFontValue">Arial</span>
+                      <svg class="font-selector-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <div class="font-selector-dropdown" id="detailedFontDropdown">
+                      <div class="font-selector-option" data-font="Arial">Arial</div>
+                      <div class="font-selector-option" data-font="Georgia">Georgia</div>
+                      <div class="font-selector-option" data-font="Palatino Linotype">Palatino Linotype</div>
+                      <div class="font-selector-option" data-font="Times New Roman">Times New Roman</div>
+                      <div class="font-selector-option" data-font="Arial Black">Arial Black</div>
+                      <div class="font-selector-option" data-font="Comic Sans MS">Comic Sans MS</div>
+                      <div class="font-selector-option" data-font="Impact">Impact</div>
+                      <div class="font-selector-option" data-font="Lucida Sans Unicode">Lucida Sans Unicode</div>
+                      <div class="font-selector-option" data-font="Tahoma">Tahoma</div>
+                      <div class="font-selector-option" data-font="Trebuchet MS">Trebuchet MS</div>
+                      <div class="font-selector-option" data-font="Verdana">Verdana</div>
+                      <div class="font-selector-option" data-font="Courier New">Courier New</div>
+                      <div class="font-selector-option" data-font="Lucida Console">Lucida Console</div>
+                      <div class="font-selector-option" data-font="Calibri">Calibri</div>
+                      <div class="font-selector-option" data-font="Raleway">Raleway</div>
+                      <div class="font-selector-option" data-font="Roboto">Roboto</div>
+                      <div class="font-selector-option" data-font="Ubuntu">Ubuntu</div>
+                      <div class="font-selector-option" data-font="Mukta">Mukta</div>
+                      <div class="font-selector-option" data-font="Open Sans">Open Sans</div>
+                      <div class="font-selector-option" data-font="Nunito Sans">Nunito Sans</div>
+                      <div class="font-selector-option" data-font="Inter">Inter</div>
+                      <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Regular">
+                        <span>GTA Art Deco Regular</span>
+                        <span class="font-tag-new">Новый шрифт</span>
+                      </div>
+                      <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Medium">
+                        <span>GTA Art Deco Medium</span>
+                        <span class="font-tag-new">Новый шрифт</span>
+                      </div>
+                      <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Bold">
+                        <span>GTA Art Deco Bold</span>
+                        <span class="font-tag-new">Новый шрифт</span>
+                      </div>
+                      <div class="font-selector-option font-selector-option--new" data-font="GTA Art Deco Condensed">
+                        <span>GTA Art Deco Condensed</span>
+                        <span class="font-tag-new">Новый шрифт</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-outline-secondary detailed-exit" id="exitDetailedMode">
+                Выйти из режима
+              </button>
+            </div>
+            <div class="detailed-editor-canvas-wrapper">
+              <div class="detailed-editor-canvas" id="detailedEditorCanvas" data-width="1481" data-height="1080">
+                <div class="detailed-background" id="detailedBackground">
+                  <div class="detailed-background-image" id="detailedBackgroundImageWrapper">
+                    <img id="detailedBackgroundImage" alt="Фон скриншота" />
+                  </div>
+                  <div class="detailed-background-placeholder">
+                    <p>Загрузите изображение 1481×1080 или больше, чтобы начать.</p>
+                  </div>
+                </div>
+                <div class="detailed-text-layer" id="detailedTextLayer">
+                  <div class="detailed-text-content" id="detailedTextContent"></div>
+                  <p class="detailed-text-placeholder">Текст появится здесь после генерации предпросмотра</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="js/app.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/download.js"></script>
+    <script src="js/download-img.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#downloadOutput").click(function () {
+          domtoimage
+            .toBlob(document.getElementById("output"))
+            .then(function (blob) {
+              window.saveAs(
+                blob,
+                new Date()
+                  .toLocaleString()
+                  .replaceAll(",", "_")
+                  .replaceAll(" ", "_")
+                  .replaceAll("/", "-")
+                  .replace("__", "_")
+                  .replaceAll(":", "-") +
+                  "_" +
+                  "chatlog.png"
+              );
+            })
+            .then(function (blob) {
+              $(".generated").css("background-color", "transparent");
+            });
+        });
+      });
+
+      function downloadGTAWAssistant() {
+        const link = document.createElement('a');
+        link.href = 'app/GTAWAssistant.exe';
+        link.download = 'GTAWAssistant.exe';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    </script>
+
+    <script src="js/parse-text.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/chatlog-parser.js"></script>
+    <script src="js/font-settings.js"></script>
+    <script src="js/detailed-editor.js"></script>
+    
+    <div class="modal-overlay" id="guideModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <img src="guide.png" alt="RAGE MP Chat Guide" class="modal-image">
+        </div>
+        <div class="modal-body">
+          <h2 class="modal-title">Инструкция по получению лога чата</h2>
+          <div class="modal-description">
+            <p><strong>Нам нужна корневая папка RAGE MP</strong></p>
+            <ol>
+              <li>Перейдите в корневую папку мультиплеера, затем перейдите по следующему пути: <code>\RAGEMP\clientdata</code></li>
+              <li>В <code>clientdata</code> найдите файл <code>console.txt</code>, скопируйте содержимое и вставьте в инструмент</li></li>
+            </ol>
+            
+            <p><strong>Альтернативный вариант</strong></p>
+            <ol>
+              <li>Вместо поиска файла можно использовать GTAWAssistant.exe. Приложение также сохраняет логи, только не стирая те после выхода с сервера</li>
+            </ol>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+              <button class="btn btn-success download-assistant-button" onclick="downloadGTAWAssistant(); document.getElementById('guideModal').classList.remove('show');">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 12L8 2M8 12L5 9M8 12L11 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 14H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Скачать GTAW Assistant
+              </button>
+            </div>
+            
+            <p class="modal-tip">💡 <strong>Важно:</strong> Если вы просто вставите весь контент в файле - нужно вручную удалить лишнее</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary modal-close" id="closeModal" onclick="document.getElementById('guideModal').classList.remove('show');">Понятно!</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
