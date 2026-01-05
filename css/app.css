@@ -972,6 +972,16 @@ input[type="number"]:focus {
     user-select: none;
 }
 
+.detailed-editor-canvas::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(255, 172, 0, 0.35);
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: 3;
+}
+
 .detailed-background,
 .detailed-text-layer {
     position: absolute;
@@ -1007,7 +1017,6 @@ input[type="number"]:focus {
     justify-content: center;
     text-align: center;
     padding: 1.5rem;
-    border: 2px dashed #333;
     border-radius: 12px;
     color: #777;
     font-size: 0.95rem;
@@ -1085,8 +1094,6 @@ input[type="number"]:focus {
     letter-spacing: 0.05em;
 }
 
-=======
->>>>>>> 4bd8d5d6881a64061f02a0c6346d840d057922e3
 .btn-success {
     background: #1a1a1a;
     color: #e0e0e0;
