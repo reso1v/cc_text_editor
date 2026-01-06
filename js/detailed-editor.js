@@ -29,11 +29,12 @@
         const fontOptions = fontDropdown ? fontDropdown.querySelectorAll('.font-selector-option') : [];
 
         const outlineInput = document.getElementById('detailedOutlineWidth');
-        const outlineValue = document.getElementById('detailedOutlineWidthValue');
+        const outlineMin = 0;
+        const outlineMax = 3;
 
         if (!imageInput || !imageWrapper || !imageEl || !imageScaleInput || !imageScaleValue ||
             !textLayer || !textContent || !textScaleInput || !textScaleValue ||
-            !exitBtn || !downloadBtn || !outlineInput || !outlineValue) {
+            !exitBtn || !downloadBtn || !outlineInput) {
             return;
         }
 
@@ -53,7 +54,7 @@
                 y: 0
             },
             outline: {
-                width: parseFloat(outlineInput.value) || 0
+                width: parseFloat(outlineInput.value) || 1
             }
         };
 
@@ -68,28 +69,26 @@
         };
 
         const applyOutline = () => {
-            const width = Math.max(0, state.outline.width);
-            outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
+            const width = Math.max(0, Math.round(state.outline.width));
 
-            let filterValue = 'none';
+            let shadowValue = 'none';
             if (width > 0) {
-                const step = Math.max(1, Math.round(width));
                 const offsets = [];
-                for (let x = -step; x <= step; x++) {
-                    for (let y = -step; y <= step; y++) {
+                for (let x = -width; x <= width; x++) {
+                    for (let y = -width; y <= width; y++) {
                         if (x === 0 && y === 0) continue;
-                        offsets.push([x, y]);
+                        if (Math.abs(x) + Math.abs(y) === width) {
+                            offsets.push([x, y]);
+                        }
                     }
                 }
-                filterValue = offsets
-                    .map(([x, y]) => `drop-shadow(${x}px ${y}px 0px #000)`)
-                    .join(' ');
+                shadowValue = offsets.map(([x, y]) => `${x}px ${y}px 0 #000`).join(', ');
             }
 
             const applyToElement = (element) => {
-                element.style.textShadow = 'none';
+                element.style.textShadow = shadowValue;
                 element.style.webkitTextStroke = '0px transparent';
-                element.style.filter = filterValue;
+                element.style.filter = 'none';
             };
 
             applyToElement(textContent);
@@ -263,8 +262,9 @@
             applyTransforms();
         });
 
-        outlineInput.addEventListener('input', (event) => {
-            state.outline.width = clamp(parseFloat(event.target.value) || 0, parseFloat(outlineInput.min), parseFloat(outlineInput.max));
+        outlineInput.addEventListener('change', (event) => {
+            const value = parseFloat(event.target.value) || 0;
+            state.outline.width = clamp(value, outlineMin, outlineMax);
             applyOutline();
         });
 

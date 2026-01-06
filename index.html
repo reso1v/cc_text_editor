@@ -276,9 +276,13 @@
                 </div>
                 <div class="control-group">
                   <span>Обводка текста</span>
-                  <div class="control-input">
-                    <input type="range" id="detailedOutlineWidth" min="0" max="6" step="0.1" value="0" />
-                    <span class="control-value" id="detailedOutlineWidthValue">0px</span>
+                  <div class="control-input outline-select">
+                    <select id="detailedOutlineWidth">
+                      <option value="0">Без обводки</option>
+                      <option value="1" selected>1 px</option>
+                      <option value="2">2 px</option>
+                      <option value="3">3 px</option>
+                    </select>
                   </div>
                 </div>
               </div>
