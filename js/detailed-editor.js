@@ -71,28 +71,22 @@
             const width = Math.max(0, state.outline.width);
             outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
 
-            const strokeWidth = width === 0 ? 0 : Math.max(width * 0.65, 0.5);
-
             let shadowValue = 'none';
             if (width > 0) {
-                const offsets = [
-                    [width, 0],
-                    [-width, 0],
-                    [0, width],
-                    [0, -width],
-                    [width, width],
-                    [-width, width],
-                    [width, -width],
-                    [-width, -width]
-                ];
+                const step = Math.max(1, Math.round(width));
+                const offsets = [];
+                for (let x = -step; x <= step; x++) {
+                    for (let y = -step; y <= step; y++) {
+                        if (x === 0 && y === 0) continue;
+                        offsets.push([x, y]);
+                    }
+                }
                 shadowValue = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
             }
 
-            const strokeValue = `${strokeWidth}px #000`;
-
             const applyToElement = (element) => {
                 element.style.textShadow = shadowValue;
-                element.style.webkitTextStroke = strokeValue;
+                element.style.webkitTextStroke = '0px transparent';
             };
 
             applyToElement(textContent);
