@@ -67,6 +67,38 @@
             textContent.style.transform = `scale(${state.text.scale})`;
         };
 
+        const applyOutline = () => {
+            const width = Math.max(0, state.outline.width);
+            outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
+
+            const strokeWidth = width === 0 ? 0 : Math.max(width * 0.65, 0.5);
+
+            let shadowValue = 'none';
+            if (width > 0) {
+                const offsets = [
+                    [width, 0],
+                    [-width, 0],
+                    [0, width],
+                    [0, -width],
+                    [width, width],
+                    [-width, width],
+                    [width, -width],
+                    [-width, -width]
+                ];
+                shadowValue = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
+            }
+
+            const strokeValue = `${strokeWidth}px #000`;
+
+            const applyToElement = (element) => {
+                element.style.textShadow = shadowValue;
+                element.style.webkitTextStroke = strokeValue;
+            };
+
+            applyToElement(textContent);
+            textContent.querySelectorAll('.generated').forEach(applyToElement);
+        };
+
         const updateScaleLabels = () => {
             imageScaleValue.textContent = `${Math.round(state.image.scale * 100)}%`;
             textScaleValue.textContent = `${Math.round(state.text.scale * 100)}%`;
@@ -99,38 +131,6 @@
             if (flag) {
                 syncTextContent();
             }
-        };
-
-        const applyOutline = () => {
-            const width = Math.max(0, state.outline.width);
-            outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
-
-            const strokeWidth = width === 0 ? 0 : Math.max(width * 0.65, 0.5);
-
-            let shadowValue = 'none';
-            if (width > 0) {
-                const offsets = [
-                    [width, 0],
-                    [-width, 0],
-                    [0, width],
-                    [0, -width],
-                    [width, width],
-                    [-width, width],
-                    [width, -width],
-                    [-width, -width]
-                ];
-                shadowValue = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
-            }
-
-            const strokeValue = `${strokeWidth}px #000`;
-
-            const applyToElement = (element) => {
-                element.style.textShadow = shadowValue;
-                element.style.webkitTextStroke = strokeValue;
-            };
-
-            applyToElement(textContent);
-            textContent.querySelectorAll('.generated').forEach(applyToElement);
         };
 
         const fitImageIntoCanvas = () => {
