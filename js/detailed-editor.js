@@ -77,6 +77,7 @@
             textContent.innerHTML = output.innerHTML;
             const hasText = textContent.textContent.trim().length > 0;
             textLayer.classList.toggle('has-text', hasText);
+            applyOutline();
         };
 
         const observer = new MutationObserver(syncTextContent);
@@ -104,27 +105,32 @@
             const width = Math.max(0, state.outline.width);
             outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
 
-            if (width === 0) {
-                textContent.style.textShadow = 'none';
-                textContent.style.webkitTextStroke = '0px #000';
-                textContent.style.strokeDasharray = '';
-                return;
+            const strokeWidth = width === 0 ? 0 : Math.max(width * 0.65, 0.5);
+
+            let shadowValue = 'none';
+            if (width > 0) {
+                const offsets = [
+                    [width, 0],
+                    [-width, 0],
+                    [0, width],
+                    [0, -width],
+                    [width, width],
+                    [-width, width],
+                    [width, -width],
+                    [-width, -width]
+                ];
+                shadowValue = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
             }
 
-            const offsets = [
-                [width, 0],
-                [-width, 0],
-                [0, width],
-                [0, -width],
-                [width, width],
-                [-width, width],
-                [width, -width],
-                [-width, -width]
-            ];
+            const strokeValue = `${strokeWidth}px #000`;
 
-            const shadows = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
-            textContent.style.textShadow = shadows;
-            textContent.style.webkitTextStroke = `${Math.max(width * 0.65, 0.5)}px #000`;
+            const applyToElement = (element) => {
+                element.style.textShadow = shadowValue;
+                element.style.webkitTextStroke = strokeValue;
+            };
+
+            applyToElement(textContent);
+            textContent.querySelectorAll('.generated').forEach(applyToElement);
         };
 
         const fitImageIntoCanvas = () => {
