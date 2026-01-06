@@ -123,6 +123,8 @@ $(document).ready(function() {
                     
                     result = result.replace(/\/(?=\s|$)/g, '<span style="color: #1F92FE;">/</span>');
                     
+                    result = result.replace(/\\n/g, '<span class="inline-break"></span>');
+                    
                     result = applyInlineHexColors(result);
                     
                     return result;
