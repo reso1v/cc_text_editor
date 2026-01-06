@@ -71,7 +71,7 @@
             const width = Math.max(0, state.outline.width);
             outlineValue.textContent = `${width.toFixed(width % 1 === 0 ? 0 : 1)}px`;
 
-            let shadowValue = 'none';
+            let filterValue = 'none';
             if (width > 0) {
                 const step = Math.max(1, Math.round(width));
                 const offsets = [];
@@ -81,12 +81,15 @@
                         offsets.push([x, y]);
                     }
                 }
-                shadowValue = offsets.map(([x, y]) => `${x}px ${y}px #000`).join(', ');
+                filterValue = offsets
+                    .map(([x, y]) => `drop-shadow(${x}px ${y}px 0px #000)`)
+                    .join(' ');
             }
 
             const applyToElement = (element) => {
-                element.style.textShadow = shadowValue;
+                element.style.textShadow = 'none';
                 element.style.webkitTextStroke = '0px transparent';
+                element.style.filter = filterValue;
             };
 
             applyToElement(textContent);
